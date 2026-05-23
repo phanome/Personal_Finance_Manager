@@ -1,0 +1,54 @@
+# Target/build directory
+target/
+*.db
+*.log
+
+# macOS system files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDEs and Editors
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# Eclipse
+.settings/
+.project
+.classpath
+.factorypath
+
+# VS Code
+.vscode/
+
+# NetBeans
+nbproject/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# Maven wrapper (keep config but ignore binary JAR if preferred, though some commit it)
+# By default, maven-wrapper.jar can be checked in or ignored. Let's ignore it to keep repo clean,
+# or we can allow it. Usually maven-wrapper.jar is ignored by some, but standard Spring Boot templates commit it.
+# We will exclude the jar to keep things tidy if needed, or just standard:
+# .mvn/wrapper/maven-wrapper.jar
+
+# Crash logs
+clear_usage_logs.log
+crash-*.log
+
+# Backup/temporary files
+*.bak
+*.tmp
+*.swp
+*~
