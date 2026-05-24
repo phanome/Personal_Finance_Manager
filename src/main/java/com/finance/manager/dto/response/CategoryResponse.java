@@ -18,8 +18,8 @@ public class CategoryResponse {
 
     /**
      * {@code true} when this is a user-defined category.
-     * Serialised as {@code "isCustom"} in the JSON output.
+     * Serialised as {@code "custom"} in the JSON output.
      */
-    @JsonProperty("isCustom")
+    @JsonProperty("custom")
     private boolean custom;
 }

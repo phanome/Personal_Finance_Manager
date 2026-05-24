@@ -64,10 +64,11 @@ public class TransactionController {
             @RequestParam(required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
             @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) String category,
             @AuthenticationPrincipal CustomUserDetails userDetails) {
 
         User user = userDetails.getUser();
-        TransactionListResponse response = transactionService.getTransactions(user, startDate, endDate, categoryId);
+        TransactionListResponse response = transactionService.getTransactions(user, startDate, endDate, categoryId, category);
         return ResponseEntity.ok(response);
     }
 

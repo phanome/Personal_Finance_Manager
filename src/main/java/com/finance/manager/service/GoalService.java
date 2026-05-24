@@ -169,14 +169,22 @@ public class GoalService {
             remaining = BigDecimal.ZERO;
         }
 
+        BigDecimal currentProgressToReturn = currentProgress.compareTo(BigDecimal.ZERO) == 0
+                ? BigDecimal.ZERO
+                : currentProgress.setScale(2, RoundingMode.HALF_UP).stripTrailingZeros();
+
+        BigDecimal remainingToReturn = remaining.compareTo(BigDecimal.ZERO) == 0
+                ? BigDecimal.ZERO
+                : remaining.setScale(2, RoundingMode.HALF_UP).stripTrailingZeros();
+
         return new GoalResponse(
                 goal.getId(),
                 goal.getGoalName(),
                 targetAmount,
                 goal.getTargetDate(),
                 goal.getStartDate(),
-                currentProgress.setScale(2, RoundingMode.HALF_UP),
+                currentProgressToReturn,
                 progressPct,
-                remaining.setScale(2, RoundingMode.HALF_UP));
+                remainingToReturn);
     }
 }

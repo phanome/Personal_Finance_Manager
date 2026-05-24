@@ -56,25 +56,44 @@ public class TransactionService {
         return mapToResponse(saved);
     }
 
+    @Transactional(readOnly = true)
+    public TransactionListResponse getTransactions(User user,
+                                                    LocalDate startDate,
+                                                    LocalDate endDate,
+                                                    Long categoryId) {
+        return getTransactions(user, startDate, endDate, categoryId, null);
+    }
+
     /**
      * Retrieves all non-deleted transactions for the user, with optional filters.
      *
-     * @param user       the authenticated user
-     * @param startDate  optional start date filter (inclusive)
-     * @param endDate    optional end date filter (inclusive)
-     * @param categoryId optional category ID filter
+     * @param user         the authenticated user
+     * @param startDate    optional start date filter (inclusive)
+     * @param endDate      optional end date filter (inclusive)
+     * @param categoryId   optional category ID filter
+     * @param categoryName optional category name filter
      * @return list of matching transactions ordered newest first
      */
     @Transactional(readOnly = true)
     public TransactionListResponse getTransactions(User user,
                                                     LocalDate startDate,
                                                     LocalDate endDate,
-                                                    Long categoryId) {
-        List<TransactionResponse> list = transactionRepository
-                .findByFilters(user, startDate, endDate, categoryId)
-                .stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
+                                                    Long categoryId,
+                                                    String categoryName) {
+        List<TransactionResponse> list;
+        if (categoryName != null && !categoryName.trim().isEmpty()) {
+            Category category = categoryService.resolveCategoryForUser(categoryName, user);
+            list = transactionRepository.findByUserAndCategory(user, category)
+                    .stream()
+                    .map(this::mapToResponse)
+                    .collect(Collectors.toList());
+        } else {
+            list = transactionRepository
+                    .findByFilters(user, startDate, endDate, categoryId)
+                    .stream()
+                    .map(this::mapToResponse)
+                    .collect(Collectors.toList());
+        }
         return new TransactionListResponse(list);
     }
 

@@ -26,6 +26,16 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     Optional<Transaction> findByIdAndUserAndDeletedFalse(Long id, User user);
 
     /**
+     * Returns non-deleted transactions for a user and category, ordered newest first.
+     */
+    @Query("SELECT t FROM Transaction t " +
+           "WHERE t.user = :user AND t.category = :category AND t.deleted = false " +
+           "ORDER BY t.date DESC, t.id DESC")
+    List<Transaction> findByUserAndCategory(
+            @Param("user") User user,
+            @Param("category") Category category);
+
+    /**
      * Returns all non-deleted transactions for a user with optional filters,
      * ordered newest first.
      *

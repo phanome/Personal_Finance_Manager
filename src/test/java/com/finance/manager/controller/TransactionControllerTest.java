@@ -68,11 +68,11 @@ class TransactionControllerTest {
     @Test
     @DisplayName("GET /api/transactions → 200 OK with list")
     void getTransactions() {
-        when(transactionService.getTransactions(any(), any(), any(), any()))
+        when(transactionService.getTransactions(any(), any(), any(), any(), any()))
                 .thenReturn(new TransactionListResponse(List.of(sampleResponse)));
 
         ResponseEntity<TransactionListResponse> response =
-                transactionController.getTransactions(null, null, null, userDetails);
+                transactionController.getTransactions(null, null, null, null, userDetails);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody().getTransactions()).hasSize(1);

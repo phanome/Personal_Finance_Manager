@@ -103,6 +103,19 @@ class TransactionServiceTest {
     }
 
     @Test
+    @DisplayName("getTransactions - returns transactions filtered by category name")
+    void getTransactions_withCategoryNameFilter() {
+        when(categoryService.resolveCategoryForUser("Salary", user)).thenReturn(salaryCategory);
+        when(transactionRepository.findByUserAndCategory(user, salaryCategory))
+                .thenReturn(List.of(sampleTransaction));
+
+        TransactionListResponse response = transactionService.getTransactions(user, null, null, null, "Salary");
+
+        assertThat(response.getTransactions()).hasSize(1);
+        assertThat(response.getTransactions().get(0).getCategory()).isEqualTo("Salary");
+    }
+
+    @Test
     @DisplayName("getTransactions - empty result when no transactions")
     void getTransactions_empty() {
         when(transactionRepository.findByFilters(user, null, null, null)).thenReturn(List.of());
