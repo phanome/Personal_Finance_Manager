@@ -2,11 +2,14 @@ package com.finance.manager.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import java.time.DateTimeException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,6 +82,31 @@ public class GlobalExceptionHandler {
         body.put("message", "Validation failed");
         body.put("errors", fieldErrors);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    /**
+     * Handles JSON parsing errors, malformed payloads, or invalid enum values.
+     */
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Map<String, String>> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
+        return buildError(HttpStatus.BAD_REQUEST, "Invalid request body or invalid data format");
+    }
+
+    /**
+     * Handles invalid date parameters (e.g. Month 13).
+     */
+    @ExceptionHandler(DateTimeException.class)
+    public ResponseEntity<Map<String, String>> handleDateTimeException(DateTimeException ex) {
+        return buildError(HttpStatus.BAD_REQUEST, "Invalid date value: " + ex.getMessage());
+    }
+
+    /**
+     * Handles path variables or query parameter type mismatches (e.g. string where number is expected).
+     */
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<Map<String, String>> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
+        return buildError(HttpStatus.BAD_REQUEST, String.format("Parameter '%s' should be of type %s", 
+                ex.getName(), ex.getRequiredType() != null ? ex.getRequiredType().getSimpleName() : "unknown"));
     }
 
     // -----------------------------------------------------------------------

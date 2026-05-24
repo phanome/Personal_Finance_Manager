@@ -36,9 +36,9 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
      */
     @Query("SELECT t FROM Transaction t " +
            "WHERE t.user = :user AND t.deleted = false " +
-           "AND (:startDate IS NULL OR t.date >= :startDate) " +
-           "AND (:endDate IS NULL OR t.date <= :endDate) " +
-           "AND (:categoryId IS NULL OR t.category.id = :categoryId) " +
+           "AND (coalesce(:startDate, t.date) <= t.date) " +
+           "AND (coalesce(:endDate, t.date) >= t.date) " +
+           "AND (coalesce(:categoryId, t.category.id) = t.category.id) " +
            "ORDER BY t.date DESC, t.id DESC")
     List<Transaction> findByFilters(
             @Param("user") User user,

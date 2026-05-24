@@ -5,9 +5,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+
+import java.time.DateTimeException;
 
 import java.util.List;
 import java.util.Map;
@@ -98,5 +102,37 @@ class GlobalExceptionHandlerTest {
         @SuppressWarnings("unchecked")
         Map<String, String> errors = (Map<String, String>) resp.getBody().get("errors");
         assertThat(errors).containsEntry("amount", "must not be null");
+    }
+
+    @Test
+    @DisplayName("handleHttpMessageNotReadable → 400")
+    void handleHttpMessageNotReadable() {
+        HttpMessageNotReadableException ex = new HttpMessageNotReadableException("malformed json");
+        ResponseEntity<Map<String, String>> resp = handler.handleHttpMessageNotReadable(ex);
+        assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(resp.getBody()).containsEntry("message", "Invalid request body or invalid data format");
+    }
+
+    @Test
+    @DisplayName("handleDateTimeException → 400")
+    void handleDateTimeException() {
+        DateTimeException ex = new DateTimeException("Invalid month: 13");
+        ResponseEntity<Map<String, String>> resp = handler.handleDateTimeException(ex);
+        assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(resp.getBody()).containsEntry("message", "Invalid date value: Invalid month: 13");
+    }
+
+    @Test
+    @DisplayName("handleTypeMismatch → 400")
+    void handleTypeMismatch() {
+        MethodArgumentTypeMismatchException ex = mock(MethodArgumentTypeMismatchException.class);
+        when(ex.getName()).thenReturn("month");
+        // Use raw type or do a type-safe mock setup if necessary; we'll return Integer.class for testing
+        Class<?> requiredType = Integer.class;
+        when(ex.getRequiredType()).thenAnswer(invocation -> requiredType);
+
+        ResponseEntity<Map<String, String>> resp = handler.handleTypeMismatch(ex);
+        assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(resp.getBody().get("message")).contains("Parameter 'month' should be of type Integer");
     }
 }
