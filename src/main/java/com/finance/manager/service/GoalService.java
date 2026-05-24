@@ -171,11 +171,11 @@ public class GoalService {
 
         BigDecimal currentProgressToReturn = currentProgress.compareTo(BigDecimal.ZERO) == 0
                 ? BigDecimal.ZERO
-                : currentProgress.setScale(2, RoundingMode.HALF_UP).stripTrailingZeros();
+                : currentProgress.setScale(2, RoundingMode.HALF_UP);
 
         BigDecimal remainingToReturn = remaining.compareTo(BigDecimal.ZERO) == 0
                 ? BigDecimal.ZERO
-                : remaining.setScale(2, RoundingMode.HALF_UP).stripTrailingZeros();
+                : remaining.setScale(2, RoundingMode.HALF_UP);
 
         return new GoalResponse(
                 goal.getId(),
