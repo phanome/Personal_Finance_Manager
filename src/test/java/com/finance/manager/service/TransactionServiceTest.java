@@ -28,9 +28,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-/**
- * Unit tests for {@link TransactionService}.
- */
+
 @ExtendWith(MockitoExtension.class)
 class TransactionServiceTest {
 
@@ -62,10 +60,7 @@ class TransactionServiceTest {
                 .build();
     }
 
-    // -----------------------------------------------------------------------
-    // createTransaction
-    // -----------------------------------------------------------------------
-
+    
     @Test
     @DisplayName("createTransaction - success: transaction saved and returned")
     void createTransaction_success() {
@@ -86,9 +81,7 @@ class TransactionServiceTest {
         assertThat(response.getType()).isEqualTo("INCOME");
     }
 
-    // -----------------------------------------------------------------------
-    // getTransactions
-    // -----------------------------------------------------------------------
+    
 
     @Test
     @DisplayName("getTransactions - returns filtered list wrapped in response")
@@ -125,9 +118,7 @@ class TransactionServiceTest {
         assertThat(response.getTransactions()).isEmpty();
     }
 
-    // -----------------------------------------------------------------------
-    // updateTransaction
-    // -----------------------------------------------------------------------
+    
 
     @Test
     @DisplayName("updateTransaction - success: amount updated, date unchanged")
@@ -190,9 +181,7 @@ class TransactionServiceTest {
                 .isInstanceOf(ResourceNotFoundException.class);
     }
 
-    // -----------------------------------------------------------------------
-    // deleteTransaction
-    // -----------------------------------------------------------------------
+   
 
     @Test
     @DisplayName("deleteTransaction - success: transaction soft-deleted")

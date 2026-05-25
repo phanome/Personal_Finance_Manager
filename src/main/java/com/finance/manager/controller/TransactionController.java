@@ -17,10 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
-/**
- * REST controller for financial transaction management.
- * All endpoints require an authenticated session.
- */
+
 @RestController
 @RequestMapping("/api/transactions")
 public class TransactionController {
@@ -31,13 +28,7 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
-    /**
-     * Creates a new transaction.
-     *
-     * @param request     transaction data
-     * @param userDetails the authenticated user principal
-     * @return 201 Created with the new transaction
-     */
+    
     @PostMapping
     public ResponseEntity<TransactionResponse> createTransaction(
             @Valid @RequestBody TransactionRequest request,
@@ -48,15 +39,7 @@ public class TransactionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    /**
-     * Lists transactions with optional filters.
-     *
-     * @param startDate  optional date filter (ISO format YYYY-MM-DD)
-     * @param endDate    optional date filter (ISO format YYYY-MM-DD)
-     * @param categoryId optional category ID filter
-     * @param userDetails the authenticated user principal
-     * @return 200 OK with filtered list ordered by newest first
-     */
+    
     @GetMapping
     public ResponseEntity<TransactionListResponse> getTransactions(
             @RequestParam(required = false)
@@ -72,14 +55,7 @@ public class TransactionController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * Updates an existing transaction (amount, category, description only; date is immutable).
-     *
-     * @param id          the transaction id
-     * @param request     fields to update
-     * @param userDetails the authenticated user principal
-     * @return 200 OK with the updated transaction
-     */
+    
     @PutMapping("/{id}")
     public ResponseEntity<TransactionResponse> updateTransaction(
             @PathVariable Long id,
@@ -91,13 +67,7 @@ public class TransactionController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * Soft-deletes a transaction.
-     *
-     * @param id          the transaction id
-     * @param userDetails the authenticated user principal
-     * @return 200 OK with confirmation message
-     */
+    
     @DeleteMapping("/{id}")
     public ResponseEntity<MessageResponse> deleteTransaction(
             @PathVariable Long id,

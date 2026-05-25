@@ -28,9 +28,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-/**
- * Unit tests for {@link CategoryService}.
- */
+
 @ExtendWith(MockitoExtension.class)
 class CategoryServiceTest {
 
@@ -55,10 +53,7 @@ class CategoryServiceTest {
                 .id(2L).name("Freelance").type(TransactionType.INCOME).custom(true).user(user).build();
     }
 
-    // -----------------------------------------------------------------------
-    // getAllCategories
-    // -----------------------------------------------------------------------
-
+    
     @Test
     @DisplayName("getAllCategories - returns default + user's custom categories")
     void getAllCategories_returnsBothDefaultAndCustom() {
@@ -72,9 +67,7 @@ class CategoryServiceTest {
         assertThat(response.getCategories().get(1).getName()).isEqualTo("Freelance");
     }
 
-    // -----------------------------------------------------------------------
-    // createCategory
-    // -----------------------------------------------------------------------
+    
 
     @Test
     @DisplayName("createCategory - success: new unique custom category created")
@@ -121,10 +114,7 @@ class CategoryServiceTest {
                 .isInstanceOf(ConflictException.class);
     }
 
-    // -----------------------------------------------------------------------
-    // deleteCategory
-    // -----------------------------------------------------------------------
-
+   
     @Test
     @DisplayName("deleteCategory - success: custom category with no transactions deleted")
     void deleteCategory_success() {
@@ -169,10 +159,7 @@ class CategoryServiceTest {
                 .hasMessageContaining("referenced by existing transactions");
     }
 
-    // -----------------------------------------------------------------------
-    // resolveCategoryForUser
-    // -----------------------------------------------------------------------
-
+    
     @Test
     @DisplayName("resolveCategoryForUser - resolves default category")
     void resolveCategoryForUser_defaultCategory() {

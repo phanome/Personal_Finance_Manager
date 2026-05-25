@@ -14,10 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * REST controller for savings goal management.
- * All endpoints require an authenticated session.
- */
+
 @RestController
 @RequestMapping("/api/goals")
 public class GoalController {
@@ -28,13 +25,7 @@ public class GoalController {
         this.goalService = goalService;
     }
 
-    /**
-     * Creates a new savings goal.
-     *
-     * @param request     goal creation payload
-     * @param userDetails the authenticated user principal
-     * @return 201 Created with the new goal and initial progress
-     */
+    
     @PostMapping
     public ResponseEntity<GoalResponse> createGoal(
             @Valid @RequestBody GoalRequest request,
@@ -45,12 +36,7 @@ public class GoalController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    /**
-     * Returns all savings goals for the authenticated user.
-     *
-     * @param userDetails the authenticated user principal
-     * @return 200 OK with goal list and live progress metrics
-     */
+    
     @GetMapping
     public ResponseEntity<GoalListResponse> getAllGoals(
             @AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -59,13 +45,7 @@ public class GoalController {
         return ResponseEntity.ok(goalService.getAllGoals(user));
     }
 
-    /**
-     * Retrieves a single savings goal by id.
-     *
-     * @param id          the goal id
-     * @param userDetails the authenticated user principal
-     * @return 200 OK with goal and live progress, 404 if not found
-     */
+    
     @GetMapping("/{id}")
     public ResponseEntity<GoalResponse> getGoal(
             @PathVariable Long id,
@@ -75,14 +55,7 @@ public class GoalController {
         return ResponseEntity.ok(goalService.getGoal(id, user));
     }
 
-    /**
-     * Updates a savings goal's target amount and/or target date.
-     *
-     * @param id          the goal id
-     * @param request     fields to update
-     * @param userDetails the authenticated user principal
-     * @return 200 OK with the updated goal and recalculated progress
-     */
+    
     @PutMapping("/{id}")
     public ResponseEntity<GoalResponse> updateGoal(
             @PathVariable Long id,
@@ -94,13 +67,7 @@ public class GoalController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * Deletes a savings goal.
-     *
-     * @param id          the goal id
-     * @param userDetails the authenticated user principal
-     * @return 200 OK with confirmation message
-     */
+    
     @DeleteMapping("/{id}")
     public ResponseEntity<MessageResponse> deleteGoal(
             @PathVariable Long id,

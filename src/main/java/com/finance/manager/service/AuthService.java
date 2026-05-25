@@ -21,9 +21,7 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * Service handling user registration, login, and logout.
- */
+
 @Service
 @Transactional
 public class AuthService {
@@ -40,13 +38,7 @@ public class AuthService {
         this.authenticationManager = authenticationManager;
     }
 
-    /**
-     * Registers a new user after validating that the email is not already taken.
-     *
-     * @param request registration payload
-     * @return response containing the new user's id
-     * @throws ConflictException if a user with the same email already exists
-     */
+    
     @SuppressWarnings("null")
     public RegisterResponse register(RegisterRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
@@ -64,14 +56,7 @@ public class AuthService {
         return new RegisterResponse("User registered successfully", saved.getId());
     }
 
-    /**
-     * Authenticates a user with username/password and establishes a server-side session.
-     *
-     * @param request     login credentials
-     * @param httpRequest the current HTTP request used to bind the session
-     * @return success message
-     * @throws UnauthorizedException if credentials are invalid
-     */
+   
     public MessageResponse login(LoginRequest request, HttpServletRequest httpRequest) {
         try {
             UsernamePasswordAuthenticationToken token =
@@ -91,12 +76,7 @@ public class AuthService {
         }
     }
 
-    /**
-     * Invalidates the current session and clears the security context.
-     *
-     * @param httpRequest the current HTTP request
-     * @return success message
-     */
+    
     public MessageResponse logout(HttpServletRequest httpRequest) {
         HttpSession session = httpRequest.getSession(false);
         if (session != null) {
@@ -106,12 +86,7 @@ public class AuthService {
         return new MessageResponse("Logout successful");
     }
 
-    /**
-     * Extracts the {@link User} entity from the given {@link CustomUserDetails} principal.
-     *
-     * @param userDetails the authenticated principal
-     * @return the underlying {@link User}
-     */
+    
     public User getUserFromPrincipal(CustomUserDetails userDetails) {
         return userDetails.getUser();
     }

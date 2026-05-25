@@ -13,20 +13,15 @@ import java.time.DateTimeException;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Centralised exception handler that translates domain exceptions into
- * consistent HTTP responses with descriptive JSON error bodies.
- */
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // -----------------------------------------------------------------------
-    // Domain exceptions
-    // -----------------------------------------------------------------------
+    
 
-    /**
-     * Handles 400 Bad Request.
-     */
+    
+     // Handles 400 Bad Request.
+     
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<Map<String, String>> handleBadRequest(BadRequestException ex) {
         return buildError(HttpStatus.BAD_REQUEST, ex.getMessage());
@@ -64,14 +59,8 @@ public class GlobalExceptionHandler {
         return buildError(HttpStatus.CONFLICT, ex.getMessage());
     }
 
-    // -----------------------------------------------------------------------
-    // Bean Validation failures (@Valid / @Validated)
-    // -----------------------------------------------------------------------
-
-    /**
-     * Handles validation errors from {@code @Valid} annotations. Returns a map
-     * of field name → error message for each failing field.
-     */
+    
+    
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidation(MethodArgumentNotValidException ex) {
         Map<String, String> fieldErrors = new HashMap<>();
@@ -84,47 +73,33 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 
-    /**
-     * Handles JSON parsing errors, malformed payloads, or invalid enum values.
-     */
+    
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Map<String, String>> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
         return buildError(HttpStatus.BAD_REQUEST, "Invalid request body or invalid data format");
     }
 
-    /**
-     * Handles invalid date parameters (e.g. Month 13).
-     */
+    
     @ExceptionHandler(DateTimeException.class)
     public ResponseEntity<Map<String, String>> handleDateTimeException(DateTimeException ex) {
         return buildError(HttpStatus.BAD_REQUEST, "Invalid date value: " + ex.getMessage());
     }
 
-    /**
-     * Handles path variables or query parameter type mismatches (e.g. string where number is expected).
-     */
+    
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Map<String, String>> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
         return buildError(HttpStatus.BAD_REQUEST, String.format("Parameter '%s' should be of type %s", 
                 ex.getName(), ex.getRequiredType() != null ? ex.getRequiredType().getSimpleName() : "unknown"));
     }
 
-    // -----------------------------------------------------------------------
-    // Catch-all
-    // -----------------------------------------------------------------------
-
-    /**
-     * Fallback handler for all other unexpected exceptions (HTTP 500).
-     */
+   
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleGeneric(Exception ex) {
         return buildError(HttpStatus.INTERNAL_SERVER_ERROR,
                 "An unexpected error occurred: " + ex.getMessage());
     }
 
-    // -----------------------------------------------------------------------
-    // Helper
-    // -----------------------------------------------------------------------
+    
 
     @SuppressWarnings("null")
     private ResponseEntity<Map<String, String>> buildError(HttpStatus status, String message) {

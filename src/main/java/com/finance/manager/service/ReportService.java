@@ -16,10 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Service for generating monthly and yearly financial reports.
- * Only non-deleted transactions are included.
- */
+
 @Service
 @Transactional(readOnly = true)
 public class ReportService {
@@ -30,14 +27,7 @@ public class ReportService {
         this.transactionRepository = transactionRepository;
     }
 
-    /**
-     * Generates a monthly report for the given year and month.
-     *
-     * @param year  the calendar year (e.g. 2024)
-     * @param month the calendar month (1–12)
-     * @param user  the authenticated user
-     * @return aggregated income and expenses by category plus net savings
-     */
+   
     public MonthlyReportResponse getMonthlyReport(int year, int month, User user) {
         YearMonth yearMonth = YearMonth.of(year, month);
         LocalDate start = yearMonth.atDay(1);
@@ -68,13 +58,7 @@ public class ReportService {
         return new MonthlyReportResponse(month, year, incomeMap, expenseMap, netSavings);
     }
 
-    /**
-     * Generates a yearly report by aggregating all months in the given year.
-     *
-     * @param year the calendar year
-     * @param user the authenticated user
-     * @return aggregated income and expenses by category plus net savings
-     */
+    
     public YearlyReportResponse getYearlyReport(int year, User user) {
         LocalDate start = LocalDate.of(year, 1, 1);
         LocalDate end = LocalDate.of(year, 12, 31);

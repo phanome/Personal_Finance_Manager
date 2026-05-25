@@ -8,15 +8,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 
-/**
- * Adapts the application {@link User} entity to Spring Security's
- * {@link UserDetails} contract. Exposes the underlying {@link User}
- * entity so controllers and services can retrieve it via
- * {@code @AuthenticationPrincipal}.
- */
+
 public class CustomUserDetails implements UserDetails {
 
-    /** The underlying application user entity. */
+    
     @Getter
     private final User user;
 

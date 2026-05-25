@@ -23,9 +23,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-/**
- * Unit tests for {@link ReportService}.
- */
+
 @ExtendWith(MockitoExtension.class)
 class ReportServiceTest {
 
@@ -55,10 +53,7 @@ class ReportServiceTest {
                 .user(user).deleted(false).build();
     }
 
-    // -----------------------------------------------------------------------
-    // Monthly report
-    // -----------------------------------------------------------------------
-
+    
     @Test
     @DisplayName("getMonthlyReport - correct income, expense, and net savings")
     void getMonthlyReport_correctAggregation() {
@@ -99,9 +94,7 @@ class ReportServiceTest {
         assertThat(report.getNetSavings()).isEqualByComparingTo("0.00");
     }
 
-    // -----------------------------------------------------------------------
-    // Yearly report
-    // -----------------------------------------------------------------------
+    
 
     @Test
     @DisplayName("getYearlyReport - aggregates across full year")

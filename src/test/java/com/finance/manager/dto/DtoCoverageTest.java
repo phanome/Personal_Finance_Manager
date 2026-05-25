@@ -13,16 +13,10 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Exercises Lombok-generated methods (getters, setters, equals, hashCode, toString)
- * on all DTOs to achieve coverage of generated code.
- */
+
 class DtoCoverageTest {
 
-    // =======================================================================
-    // Request DTOs
-    // =======================================================================
-
+   
     @Test
     @DisplayName("LoginRequest: getters, setters, equals, hashCode, toString")
     void loginRequest() {
@@ -171,9 +165,7 @@ class DtoCoverageTest {
         assertThat(u.hashCode()).isEqualTo(u2.hashCode());
     }
 
-    // =======================================================================
-    // Response DTOs
-    // =======================================================================
+   
 
     @Test
     @DisplayName("MessageResponse: getter, setter, equals, hashCode, toString")
@@ -188,7 +180,7 @@ class DtoCoverageTest {
         assertThat(m).isEqualTo(m2);
         assertThat(m.hashCode()).isEqualTo(m2.hashCode());
 
-        // no-args
+       
         MessageResponse m3 = new MessageResponse();
         m3.setMessage("test");
         assertThat(m3.getMessage()).isEqualTo("test");
@@ -208,7 +200,7 @@ class DtoCoverageTest {
         assertThat(r).isEqualTo(r2);
         assertThat(r.hashCode()).isEqualTo(r2.hashCode());
 
-        // no-args
+        
         RegisterResponse r3 = new RegisterResponse();
         r3.setMessage("test");
         r3.setUserId(3L);
@@ -218,7 +210,7 @@ class DtoCoverageTest {
     @Test
     @DisplayName("CategoryResponse: all-args (3 fields), no-args, getters, setters")
     void categoryResponse() {
-        // CategoryResponse has 3 fields: name, type, custom (no id)
+        
         CategoryResponse c = new CategoryResponse("Salary", "INCOME", false);
         assertThat(c.getName()).isEqualTo("Salary");
         assertThat(c.getType()).isEqualTo("INCOME");

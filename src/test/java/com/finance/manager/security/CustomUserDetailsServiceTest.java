@@ -16,9 +16,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-/**
- * Unit tests for {@link CustomUserDetailsService}.
- */
+
 @ExtendWith(MockitoExtension.class)
 class CustomUserDetailsServiceTest {
 

@@ -8,25 +8,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Repository for {@link SavingsGoal} entity operations.
- */
+
 @Repository
 public interface SavingsGoalRepository extends JpaRepository<SavingsGoal, Long> {
 
-    /**
-     * Returns all savings goals belonging to a user.
-     *
-     * @param user the owning user
-     */
+    
     List<SavingsGoal> findByUser(User user);
 
-    /**
-     * Finds a savings goal by id and owner.
-     *
-     * @param id   the goal id
-     * @param user the owning user
-     * @return an {@link Optional} containing the goal if found and owned by the user
-     */
+    
     Optional<SavingsGoal> findByIdAndUser(Long id, User user);
 }

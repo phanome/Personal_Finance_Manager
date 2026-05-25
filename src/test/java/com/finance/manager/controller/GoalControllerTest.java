@@ -26,9 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
-/**
- * Unit tests for {@link GoalController}.
- */
+
 @ExtendWith(MockitoExtension.class)
 class GoalControllerTest {
 

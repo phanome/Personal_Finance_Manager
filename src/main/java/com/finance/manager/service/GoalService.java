@@ -20,9 +20,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Service for savings goal management and progress tracking.
- */
+
 @Service
 @Transactional
 public class GoalService {
@@ -36,13 +34,7 @@ public class GoalService {
         this.transactionRepository = transactionRepository;
     }
 
-    /**
-     * Creates a new savings goal for the authenticated user.
-     *
-     * @param request goal creation payload
-     * @param user    the owning user
-     * @return the created goal with current progress
-     */
+    
     public GoalResponse createGoal(GoalRequest request, User user) {
         LocalDate startDate = (request.getStartDate() != null)
                 ? request.getStartDate()
@@ -60,11 +52,7 @@ public class GoalService {
         return buildGoalResponse(saved, user);
     }
 
-    /**
-     * Returns all savings goals for the authenticated user with live progress metrics.
-     *
-     * @param user the authenticated user
-     */
+    
     @Transactional(readOnly = true)
     public GoalListResponse getAllGoals(User user) {
         List<GoalResponse> responses = goalRepository.findByUser(user)
@@ -74,14 +62,7 @@ public class GoalService {
         return new GoalListResponse(responses);
     }
 
-    /**
-     * Retrieves a single savings goal by id.
-     *
-     * @param id   the goal id
-     * @param user the authenticated user
-     * @return the goal with current progress
-     * @throws ResourceNotFoundException if the goal doesn't exist or belongs to another user
-     */
+    
     @Transactional(readOnly = true)
     public GoalResponse getGoal(Long id, User user) {
         SavingsGoal goal = goalRepository.findByIdAndUser(id, user)
@@ -89,15 +70,7 @@ public class GoalService {
         return buildGoalResponse(goal, user);
     }
 
-    /**
-     * Updates the target amount and/or target date of an existing goal.
-     *
-     * @param id      the goal id
-     * @param request fields to update
-     * @param user    the authenticated user
-     * @return the updated goal with recalculated progress
-     * @throws ResourceNotFoundException if the goal doesn't exist or belongs to another user
-     */
+    
     public GoalResponse updateGoal(Long id, UpdateGoalRequest request, User user) {
         SavingsGoal goal = goalRepository.findByIdAndUser(id, user)
                 .orElseThrow(() -> new ResourceNotFoundException("Goal not found with id: " + id));
@@ -113,14 +86,7 @@ public class GoalService {
         return buildGoalResponse(saved, user);
     }
 
-    /**
-     * Deletes a savings goal.
-     *
-     * @param id   the goal id
-     * @param user the authenticated user
-     * @return success message
-     * @throws ResourceNotFoundException if the goal doesn't exist or belongs to another user
-     */
+    
     public MessageResponse deleteGoal(Long id, User user) {
         SavingsGoal goal = goalRepository.findByIdAndUser(id, user)
                 .orElseThrow(() -> new ResourceNotFoundException("Goal not found with id: " + id));
@@ -128,16 +94,7 @@ public class GoalService {
         return new MessageResponse("Goal deleted successfully");
     }
 
-    // -----------------------------------------------------------------------
-    // Progress calculation
-    // -----------------------------------------------------------------------
-
-    /**
-     * Builds a {@link GoalResponse} enriched with live progress metrics.
-     *
-     * <p>Progress = (total INCOME since startDate) − (total EXPENSE since startDate).
-     * Progress is clamped to 0 if net is negative, capped at targetAmount for the percentage.</p>
-     */
+    
     private GoalResponse buildGoalResponse(SavingsGoal goal, User user) {
         BigDecimal totalIncome = transactionRepository.sumAmountByUserAndTypeFromDate(
                 user, TransactionType.INCOME, goal.getStartDate());

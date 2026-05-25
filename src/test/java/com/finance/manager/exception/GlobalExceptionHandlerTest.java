@@ -20,9 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-/**
- * Unit tests for {@link GlobalExceptionHandler}.
- */
+
 class GlobalExceptionHandlerTest {
 
     private GlobalExceptionHandler handler;
@@ -127,7 +125,7 @@ class GlobalExceptionHandlerTest {
     void handleTypeMismatch() {
         MethodArgumentTypeMismatchException ex = mock(MethodArgumentTypeMismatchException.class);
         when(ex.getName()).thenReturn("month");
-        // Use raw type or do a type-safe mock setup if necessary; we'll return Integer.class for testing
+        
         Class<?> requiredType = Integer.class;
         when(ex.getRequiredType()).thenAnswer(invocation -> requiredType);
 

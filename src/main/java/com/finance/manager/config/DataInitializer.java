@@ -8,10 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-/**
- * Seeds the database with the default (system-wide) categories on application startup.
- * Default categories cannot be deleted or modified by users.
- */
+
 @Component
 public class DataInitializer implements CommandLineRunner {
 

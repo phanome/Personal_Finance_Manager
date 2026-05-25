@@ -7,10 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-/**
- * Spring Security {@link UserDetailsService} implementation that loads
- * a {@link User} from the database by their email (username).
- */
+
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -20,12 +17,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
-    /**
-     * Loads a {@link UserDetails} instance for the given username (email).
-     *
-     * @param username the email address
-     * @throws UsernameNotFoundException if no user with the email exists
-     */
+    
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)

@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-/**
- * Response representation of a savings goal including live progress metrics.
- */
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
