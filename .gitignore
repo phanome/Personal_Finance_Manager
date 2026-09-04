@@ -1,0 +1,57 @@
+# Compiled class and build output
+target/
+build/
+out/
+dist/
+nbbuild/
+nbdist/
+.nb-gradle/
+
+# Database and logs
+*.db
+*.log
+clear_usage_logs.log
+crash-*.log
+
+# Environment and local config files
+.env
+.env.local
+.env.*.local
+application-local.properties
+application-local.yml
+
+# macOS system files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Eclipse
+.settings/
+.project
+.classpath
+.factorypath
+
+# VS Code
+.vscode/
+
+# NetBeans
+nbproject/
+
+# Temporary / editor files
+*.bak
+*.tmp
+*.swp
+*~
+
+# Test artifacts and session cookies
+cookies.txt
