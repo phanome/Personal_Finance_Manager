@@ -30,9 +30,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-/**
- * Unit tests for {@link AuthService}.
- */
 @ExtendWith(MockitoExtension.class)
 class AuthServiceTest {
 
@@ -63,10 +60,6 @@ class AuthServiceTest {
                 .build();
     }
 
-    // -----------------------------------------------------------------------
-    // Register
-    // -----------------------------------------------------------------------
-
     @Test
     @DisplayName("register - success: new email returns userId")
     void register_success() {
@@ -92,10 +85,6 @@ class AuthServiceTest {
 
         verify(userRepository, never()).save(any());
     }
-
-    // -----------------------------------------------------------------------
-    // Login
-    // -----------------------------------------------------------------------
 
     @Test
     @DisplayName("login - success: valid credentials establish session")
@@ -134,10 +123,6 @@ class AuthServiceTest {
                 .isInstanceOf(UnauthorizedException.class)
                 .hasMessageContaining("Invalid username or password");
     }
-
-    // -----------------------------------------------------------------------
-    // Logout
-    // -----------------------------------------------------------------------
 
     @Test
     @DisplayName("logout - with active session: invalidates session")

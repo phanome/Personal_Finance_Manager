@@ -28,9 +28,6 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-/**
- * Unit tests for {@link TransactionService}.
- */
 @ExtendWith(MockitoExtension.class)
 class TransactionServiceTest {
 
@@ -62,10 +59,6 @@ class TransactionServiceTest {
                 .build();
     }
 
-    // -----------------------------------------------------------------------
-    // createTransaction
-    // -----------------------------------------------------------------------
-
     @Test
     @DisplayName("createTransaction - success: transaction saved and returned")
     void createTransaction_success() {
@@ -85,10 +78,6 @@ class TransactionServiceTest {
         assertThat(response.getCategory()).isEqualTo("Salary");
         assertThat(response.getType()).isEqualTo("INCOME");
     }
-
-    // -----------------------------------------------------------------------
-    // getTransactions
-    // -----------------------------------------------------------------------
 
     @Test
     @DisplayName("getTransactions - returns filtered list wrapped in response")
@@ -125,10 +114,6 @@ class TransactionServiceTest {
         assertThat(response.getTransactions()).isEmpty();
     }
 
-    // -----------------------------------------------------------------------
-    // updateTransaction
-    // -----------------------------------------------------------------------
-
     @Test
     @DisplayName("updateTransaction - success: amount updated, date unchanged")
     void updateTransaction_success() {
@@ -150,7 +135,7 @@ class TransactionServiceTest {
 
         assertThat(response.getAmount()).isEqualByComparingTo("6000.00");
         assertThat(response.getDescription()).isEqualTo("Updated Salary");
-        // Date unchanged
+
         assertThat(response.getDate()).isEqualTo(LocalDate.of(2024, 1, 15));
     }
 
@@ -189,10 +174,6 @@ class TransactionServiceTest {
         assertThatThrownBy(() -> transactionService.updateTransaction(99L, request, user))
                 .isInstanceOf(ResourceNotFoundException.class);
     }
-
-    // -----------------------------------------------------------------------
-    // deleteTransaction
-    // -----------------------------------------------------------------------
 
     @Test
     @DisplayName("deleteTransaction - success: transaction soft-deleted")

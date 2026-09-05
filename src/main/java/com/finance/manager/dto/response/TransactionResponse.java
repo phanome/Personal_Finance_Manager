@@ -7,9 +7,6 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-/**
- * Response representation of a single transaction.
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

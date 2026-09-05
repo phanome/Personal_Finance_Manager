@@ -4,9 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Response returned after a successful user registration.
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

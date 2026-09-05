@@ -6,9 +6,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-/**
- * Wrapper response containing a list of transactions.
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

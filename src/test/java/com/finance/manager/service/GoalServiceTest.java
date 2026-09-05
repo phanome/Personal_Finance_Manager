@@ -28,9 +28,6 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-/**
- * Unit tests for {@link GoalService}.
- */
 @ExtendWith(MockitoExtension.class)
 class GoalServiceTest {
 
@@ -64,10 +61,6 @@ class GoalServiceTest {
                 .thenReturn(expense);
     }
 
-    // -----------------------------------------------------------------------
-    // createGoal
-    // -----------------------------------------------------------------------
-
     @Test
     @DisplayName("createGoal - success with explicit startDate")
     void createGoal_success_withStartDate() {
@@ -94,7 +87,6 @@ class GoalServiceTest {
         request.setGoalName("New Car");
         request.setTargetAmount(new BigDecimal("10000.00"));
         request.setTargetDate(LocalDate.now().plusYears(2));
-        // startDate not set
 
         SavingsGoal savedGoal = SavingsGoal.builder()
                 .id(2L).goalName("New Car")
@@ -112,10 +104,6 @@ class GoalServiceTest {
         assertThat(response.getCurrentProgress()).isEqualByComparingTo("0.00");
     }
 
-    // -----------------------------------------------------------------------
-    // getAllGoals
-    // -----------------------------------------------------------------------
-
     @Test
     @DisplayName("getAllGoals - returns all goals with progress")
     void getAllGoals_returnsGoals() {
@@ -127,10 +115,6 @@ class GoalServiceTest {
         assertThat(response.getGoals()).hasSize(1);
         assertThat(response.getGoals().get(0).getCurrentProgress()).isEqualByComparingTo("2000.00");
     }
-
-    // -----------------------------------------------------------------------
-    // getGoal
-    // -----------------------------------------------------------------------
 
     @Test
     @DisplayName("getGoal - success: returns goal with progress")
@@ -152,10 +136,6 @@ class GoalServiceTest {
         assertThatThrownBy(() -> goalService.getGoal(99L, user))
                 .isInstanceOf(ResourceNotFoundException.class);
     }
-
-    // -----------------------------------------------------------------------
-    // updateGoal
-    // -----------------------------------------------------------------------
 
     @Test
     @DisplayName("updateGoal - success: target amount and date updated")
@@ -180,10 +160,6 @@ class GoalServiceTest {
         assertThat(response.getTargetAmount()).isEqualByComparingTo("6000.00");
     }
 
-    // -----------------------------------------------------------------------
-    // deleteGoal
-    // -----------------------------------------------------------------------
-
     @Test
     @DisplayName("deleteGoal - success: goal removed")
     void deleteGoal_success() {
@@ -204,15 +180,11 @@ class GoalServiceTest {
                 .isInstanceOf(ResourceNotFoundException.class);
     }
 
-    // -----------------------------------------------------------------------
-    // Progress edge cases
-    // -----------------------------------------------------------------------
-
     @Test
     @DisplayName("progress clamped to 0 when expenses exceed income")
     void progress_clampedToZero_whenNegative() {
         when(goalRepository.findByIdAndUser(1L, user)).thenReturn(Optional.of(sampleGoal));
-        // Expenses > Income => net negative
+
         mockProgressQueries(new BigDecimal("100.00"), new BigDecimal("500.00"));
 
         GoalResponse response = goalService.getGoal(1L, user);

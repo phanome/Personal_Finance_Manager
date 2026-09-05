@@ -15,16 +15,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-/**
- * Spring Security configuration for the Personal Finance Manager.
- *
- * <ul>
- *   <li>Session-based authentication (cookies)</li>
- *   <li>Public endpoints: {@code /api/auth/**} and the H2 console</li>
- *   <li>All other endpoints require authentication</li>
- *   <li>Returns JSON 401 instead of the default login-page redirect</li>
- * </ul>
- */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -35,16 +25,12 @@ public class SecurityConfig {
         this.userDetailsService = userDetailsService;
     }
 
-    /**
-     * Configures the main security filter chain.
-     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            // Disable CSRF for stateless REST clients; session cookie is httpOnly
+
             .csrf(csrf -> csrf.disable())
 
-            // Allow frames for H2 console
             .headers(headers -> headers
                     .frameOptions(frame -> frame.sameOrigin()))
 
@@ -53,11 +39,9 @@ public class SecurityConfig {
                     .requestMatchers("/h2-console/**").permitAll()
                     .anyRequest().authenticated())
 
-            // Session-based (IF_REQUIRED creates a session when needed)
             .sessionManagement(session -> session
                     .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
 
-            // Return JSON 401 instead of redirecting to a login page
             .exceptionHandling(ex -> ex
                     .authenticationEntryPoint((request, response, authException) -> {
                         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -70,10 +54,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-    /**
-     * Wires the custom {@link CustomUserDetailsService} and {@link PasswordEncoder}
-     * into the DAO authentication provider.
-     */
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -82,17 +62,11 @@ public class SecurityConfig {
         return provider;
     }
 
-    /**
-     * BCrypt password encoder used for hashing and verifying passwords.
-     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    /**
-     * Exposes the {@link AuthenticationManager} so it can be injected into services.
-     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
             throws Exception {

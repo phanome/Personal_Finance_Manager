@@ -23,9 +23,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-/**
- * Unit tests for {@link ReportController}.
- */
 @ExtendWith(MockitoExtension.class)
 class ReportControllerTest {
 

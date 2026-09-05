@@ -9,15 +9,7 @@ import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Exercises Lombok-generated methods (getters, setters, equals, hashCode, toString, builders)
- * on all JPA entities to ensure coverage of generated code.
- */
 class EntityCoverageTest {
-
-    // -----------------------------------------------------------------------
-    // User
-    // -----------------------------------------------------------------------
 
     @Test
     @DisplayName("User: builder, getters, setters, equals, hashCode, toString")
@@ -44,23 +36,16 @@ class EntityCoverageTest {
 
         assertThat(user.getId()).isEqualTo(2L);
 
-        // equals & hashCode
         User user2 = User.builder().id(2L).username("other@example.com").password("newPass")
                 .fullName("Other").phoneNumber("+0987654321").build();
         assertThat(user).isEqualTo(user2);
         assertThat(user.hashCode()).isEqualTo(user2.hashCode());
 
-        // toString
         assertThat(user.toString()).contains("User");
 
-        // no-args constructor
         User empty = new User();
         assertThat(empty.getId()).isNull();
     }
-
-    // -----------------------------------------------------------------------
-    // Category
-    // -----------------------------------------------------------------------
 
     @Test
     @DisplayName("Category: builder, getters, setters, equals, hashCode, toString")
@@ -99,10 +84,6 @@ class EntityCoverageTest {
         Category empty = new Category();
         assertThat(empty.getId()).isNull();
     }
-
-    // -----------------------------------------------------------------------
-    // Transaction
-    // -----------------------------------------------------------------------
 
     @Test
     @DisplayName("Transaction: builder, getters, setters, equals, hashCode, toString")
@@ -148,10 +129,6 @@ class EntityCoverageTest {
         Transaction empty = new Transaction();
         assertThat(empty.getId()).isNull();
     }
-
-    // -----------------------------------------------------------------------
-    // SavingsGoal
-    // -----------------------------------------------------------------------
 
     @Test
     @DisplayName("SavingsGoal: builder, getters, setters, equals, hashCode, toString")
