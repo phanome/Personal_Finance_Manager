@@ -330,3 +330,111 @@ Example: `GET /api/reports/yearly/2026`
 ```
 
 ---
+
+## Testing & Coverage
+
+### Unit Tests
+
+To run the full test suite and generate a JaCoCo coverage report:
+```bash
+./mvnw clean test
+```
+
+**Results:**
+```
+Tests run: 95, Failures: 0, Errors: 0, Skipped: 0
+BUILD SUCCESS
+```
+
+The HTML coverage report is generated at `target/site/jacoco/index.html`.
+
+### End-to-End Tests
+
+An E2E test script (`financial_manager_tests.sh`) is included in the repository to validate the full API against any deployment:
+
+```bash
+# Run against local server
+./financial_manager_tests.sh "http://localhost:8080/api"
+
+# Run against live Render deployment
+./financial_manager_tests.sh "https://personal-finance-manager-api-ys63.onrender.com/api"
+```
+
+**Live E2E Results:**
+```
+Base URL: https://personal-finance-manager-api-ys63.onrender.com/api
+Total Tests Executed: 86
+Tests Passed: 86
+Tests Failed: 0
+Success Rate: 100%
+```
+
+---
+
+## Quick Start with cURL
+
+```bash
+BASE_URL="https://personal-finance-manager-api-ys63.onrender.com/api"
+
+# 1. Register a user
+curl -s -X POST $BASE_URL/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"username":"demo@example.com","password":"Demo1234!","fullName":"Demo User","phoneNumber":"1234567890"}'
+
+# 2. Login (saves session cookie)
+curl -s -X POST $BASE_URL/auth/login \
+  -H "Content-Type: application/json" \
+  -c cookies.txt \
+  -d '{"username":"demo@example.com","password":"Demo1234!"}'
+
+# 3. List categories
+curl -s -b cookies.txt $BASE_URL/categories
+
+# 4. Add a transaction
+curl -s -X POST $BASE_URL/transactions \
+  -H "Content-Type: application/json" \
+  -b cookies.txt \
+  -d '{"amount":50000,"description":"May Salary","date":"2026-05-01","category":"Salary"}'
+
+# 5. View monthly report
+curl -s -b cookies.txt $BASE_URL/reports/monthly/2026/5
+
+# 6. Create a savings goal
+curl -s -X POST $BASE_URL/goals \
+  -H "Content-Type: application/json" \
+  -b cookies.txt \
+  -d '{"goalName":"New Laptop","targetAmount":80000,"targetDate":"2026-12-31"}'
+```
+
+---
+
+## Project Structure
+
+```
+src/main/java/com/finance/manager/
+├── config/                 # Security config, data initializer
+├── controller/             # REST controllers (Auth, Category, Transaction, Goal, Report)
+├── dto/
+│   ├── request/            # Request DTOs with validation
+│   └── response/           # Response DTOs
+├── entity/                 # JPA entities (User, Category, Transaction, SavingsGoal)
+├── enums/                  # TransactionType (INCOME, EXPENSE)
+├── exception/              # Custom exceptions + global handler
+├── repository/             # Spring Data JPA repositories
+├── security/               # CustomUserDetails, CustomUserDetailsService
+└── service/                # Business logic layer
+
+src/test/java/com/finance/manager/
+├── controller/             # Controller unit tests
+├── dto/                    # DTO coverage tests
+├── entity/                 # Entity coverage tests
+├── exception/              # Exception handler tests
+├── security/               # Security tests
+└── service/                # Service unit tests
+```
+
+---
+
+## License
+
+This project is for educational and personal use.
