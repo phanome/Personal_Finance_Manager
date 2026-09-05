@@ -92,3 +92,241 @@ psql -d financedb -c "SELECT * FROM savings_goals;"
 
 ---
 
+## API Documentation
+
+All request and response bodies use JSON. Authentication is required for all endpoints except `/api/auth/register` and `/api/auth/login`.
+
+### 1. Authentication
+
+#### Register a new user
+**POST** `/api/auth/register`
+```json
+{
+  "username": "demo@example.com",
+  "password": "Demo1234!",
+  "fullName": "John Doe",
+  "phoneNumber": "1234567890"
+}
+```
+**Response** (`201 Created`):
+```json
+{
+  "message": "User registered successfully",
+  "userId": 1
+}
+```
+
+#### Login
+**POST** `/api/auth/login`
+```json
+{
+  "username": "demo@example.com",
+  "password": "Demo1234!"
+}
+```
+**Response** (`200 OK`): Sets a `JSESSIONID` cookie for session-based auth.
+```json
+{
+  "message": "Login successful"
+}
+```
+
+#### Logout
+**POST** `/api/auth/logout`
+
+**Response** (`200 OK`):
+```json
+{
+  "message": "Logout successful"
+}
+```
+
+---
+
+### 2. Categories
+
+#### List all categories
+**GET** `/api/categories`
+
+**Response** (`200 OK`):
+```json
+{
+  "categories": [
+    { "name": "Salary", "type": "INCOME", "custom": false },
+    { "name": "Food", "type": "EXPENSE", "custom": false },
+    { "name": "Rent", "type": "EXPENSE", "custom": false }
+  ]
+}
+```
+
+#### Create a custom category
+**POST** `/api/categories`
+```json
+{
+  "name": "Gym & Fitness",
+  "type": "EXPENSE"
+}
+```
+**Response** (`201 Created`):
+```json
+{
+  "name": "Gym & Fitness",
+  "type": "EXPENSE",
+  "custom": true
+}
+```
+
+#### Delete a custom category
+**DELETE** `/api/categories/{name}`
+
+> **Note**: Default system categories cannot be deleted. A category cannot be deleted if it is referenced by active transactions.
+
+---
+
+### 3. Transactions
+
+#### List transactions
+**GET** `/api/transactions`
+
+Optional query parameters: `startDate` (YYYY-MM-DD), `endDate` (YYYY-MM-DD), `categoryId`, `category`
+
+**Response** (`200 OK`):
+```json
+{
+  "transactions": [
+    {
+      "id": 1,
+      "amount": 50000.0,
+      "description": "May Salary",
+      "date": "2026-05-01",
+      "type": "INCOME",
+      "category": "Salary"
+    }
+  ]
+}
+```
+
+#### Create a transaction
+**POST** `/api/transactions`
+```json
+{
+  "amount": 2000,
+  "description": "Electricity bill",
+  "date": "2026-05-15",
+  "category": "Utilities"
+}
+```
+> **Note**: The transaction type (INCOME/EXPENSE) is determined automatically from the category. Date cannot be in the future.
+
+#### Update a transaction
+**PUT** `/api/transactions/{id}`
+```json
+{
+  "amount": 2500,
+  "description": "Updated electricity bill",
+  "category": "Utilities"
+}
+```
+> **Note**: The transaction date is immutable and cannot be changed.
+
+#### Delete a transaction (soft-delete)
+**DELETE** `/api/transactions/{id}`
+
+---
+
+### 4. Savings Goals
+
+#### List all goals
+**GET** `/api/goals`
+
+**Response** (`200 OK`):
+```json
+{
+  "goals": [
+    {
+      "id": 1,
+      "goalName": "New Laptop",
+      "targetAmount": 80000.0,
+      "targetDate": "2026-12-31",
+      "startDate": "2026-05-24",
+      "currentProgress": 48500.0,
+      "progressPercentage": 60.63,
+      "remainingAmount": 31500.0
+    }
+  ]
+}
+```
+
+#### Create a goal
+**POST** `/api/goals`
+```json
+{
+  "goalName": "New Laptop",
+  "targetAmount": 80000,
+  "targetDate": "2026-12-31",
+  "startDate": "2026-01-01"
+}
+```
+> **Note**: `startDate` is optional and defaults to today. `targetDate` must be in the future.
+
+#### Get a specific goal
+**GET** `/api/goals/{id}`
+
+#### Update a goal
+**PUT** `/api/goals/{id}`
+```json
+{
+  "targetAmount": 90000,
+  "targetDate": "2027-06-30"
+}
+```
+
+#### Delete a goal
+**DELETE** `/api/goals/{id}`
+
+---
+
+### 5. Reports
+
+#### Monthly report
+**GET** `/api/reports/monthly/{year}/{month}`
+
+Example: `GET /api/reports/monthly/2026/5`
+
+**Response** (`200 OK`):
+```json
+{
+  "month": 5,
+  "year": 2026,
+  "totalIncome": {
+    "Salary": 50000.0
+  },
+  "totalExpenses": {
+    "Food": 1500.0,
+    "Utilities": 2000.0
+  },
+  "netSavings": 46500.0
+}
+```
+
+#### Yearly report
+**GET** `/api/reports/yearly/{year}`
+
+Example: `GET /api/reports/yearly/2026`
+
+**Response** (`200 OK`):
+```json
+{
+  "year": 2026,
+  "totalIncome": {
+    "Salary": 600000.0
+  },
+  "totalExpenses": {
+    "Food": 18000.0,
+    "Utilities": 24000.0
+  },
+  "netSavings": 558000.0
+}
+```
+
+---
